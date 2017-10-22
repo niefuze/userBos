@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>消息窗口的使用</title>
+		<script type="text/javascript" src="../js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="../js/easyui/jquery.easyui.min.js" ></script>
+		<script type="text/javascript" src="../js/easyui/locale/easyui-lang-zh_CN.js" ></script>
+		<link rel="stylesheet" href="../js/easyui/themes/default/easyui.css" />
+		<link rel="stylesheet" href="../js/easyui/themes/icon.css" />
+		
+		<script type="text/javascript">
+			$(function(){
+				<!-- 警告窗口的 -->
+				/*$.messager.alert("警告","重大警告","question");	*/
+				
+				<!-- 确认窗口 -->
+				/*$.messager.confirm("提示","确定删除吗？",function(data){
+					if(data){
+						alert("123");
+					}else{
+						alert("456");
+					}
+				})*/
+				
+				<!-- 消息窗口 -->
+				/*$.messager.prompt("输入信息","请输入姓名：",function(data){
+					alert("热烈欢迎："+data);
+				});*/
+				
+				<!-- 在右下角显示一个消息窗口 -->
+				/*$.messager.show({
+					title:"快过来看看",
+					msg: "大促销<a href='http://www.baidu.com'>猛戳这里</a>",
+					timeout:5000
+				});*/
+				
+				<!-- 进度条窗口 -->
+				$.messager.progress({
+					interval:1000
+				});
+				// window.setInterval("$.messager.progress('close')",5000);
+				window.setTimeout("$.messager.progress('close')",3000);
+				
+			});
+			
+			
+		</script>
+	</head>
+	<body>
+		
+		
+		
+	</body>
+</html>

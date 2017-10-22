@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>页面格局</title>
+		<!-- 引入easyui -->
+		<script type="text/javascript" src="../js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="../js/easyui/jquery.easyui.min.js" ></script>
+		<script type="text/javascript" src="../js/easyui/locale/easyui-lang-zh_CN.js" ></script>
+		<link rel="stylesheet" href="../js/easyui/themes/default/easyui.css" />
+		<link rel="stylesheet" href="../js/easyui/themes/icon.css" />
+		<!-- 引入属性菜单 -->
+		<script type="text/javascript" src="../js/ztree/jquery.ztree.all-3.5.js" ></script>
+		<link rel="stylesheet" href="../js/ztree/zTreeStyle.css" />
+		
+		<script>
+			$(function(){
+				
+				var setting = {
+					data:{
+						simpleData:{
+							enable:true
+						}
+					},
+					
+					callback:{
+						onClick:function(event, treeId, treeNode, clickFlag){
+							
+							var content = '<div style="width:100%;height:100%;overflow:hidden;">'
+								+ '<iframe src="'
+								+ treeNode.page
+								+ '" scrolling="auto" style="width:100%;height:100%;border:0;" ></iframe></div>';
+							// 有链接地址
+							if(treeNode.page){
+								// 该选项卡存在
+								if($("#cen").tabs("exists",treeNode.name)){
+									$("#cen").tabs("select",treeNode.name);
+								}else{
+									// 不存在
+									$("#cen").tabs("add",{
+										title: treeNode.name,
+										content:content,
+										closable:true
+									});
+								}
+							}
+						}
+					}
+					
+				};
+				
+				var nodes = [
+					{id:1,pId:0,name:"父节点一"},
+					{id:11,pId:1,name:"子节点一",page:"http://www.baidu.com"},
+					{id:2,pId:0,name:"父节点二"},
+					{id:21,pId:2,name:"子节点二",page:"http://www.itcast.cn"}
+				]
+				
+				$.fn.zTree.init($("#baseMenu"),setting,nodes);
+				
+				// 右键菜单 
+				$("#cen").tabs({
+					onContextMenu:function(e, title,index){
+						
+						e.preventDefault();
+						
+						$("#youjian").menu("show",{
+							left:e.pageX,
+							top:e.pageY
+						});
+						// 实现删除当前菜单
+						/*$("#curr").click(function(){
+							$("#cen").tabs("close",{
+								title:title
+							})
+						});	*/
+					}
+				});
+				
+				
+				
+			});
+			
+			
+		</script>
+	</head>
+	<body class="easyui-layout">
+		
+		<div data-options = "region:'north',title:'聂富泽'" style="height: 100px;">
+			<!-- 下拉菜单 -->
+			<a href="#" data-options="iconCls:'icon-save',menu:'#menu'" class="easyui-menubutton">系统菜单</a>
+			<div id="menu">
+				<div>菜单一</div>
+				<div>菜单儿</div>
+				<div class="menu-sep"></div>
+				<div>菜单三</div>
+			</div>
+		</div>
+		<div data-options = "region:'west',title:'菜单'" style="width: 180px;">
+			
+			<!-- 设置可折叠框 -->
+			<div class="easyui-accordion" data-options="fit:true">
+				
+				<div data-options="title:'菜单一'">
+					<ul id="baseMenu" class="ztree"></ul>
+					<a href="#" id="dianji">点击</a>
+					
+				</div>
+				<div data-options="title:'菜单儿'">菜单儿</div>
+			</div>
+			
+		</div>
+		<div  data-options = "region:'center'">
+			
+			<div data-options="fit:true" class="easyui-tabs" id="cen">
+				
+			</div>
+			
+			
+		</div>
+		<div data-options = "region:'south'" style="height: 80px;">south</div>
+		<div data-options = "region:'east'" style="width: 80px;">west</div>
+		
+		<!-- 右键菜单的 -->
+		<div id="youjian" class="easyui-menu" style="width: 120px;">
+			<div id="curr">删除当前窗口</div>
+			<div id="other">删除其他窗口</div>
+			<div class="menu-sep"></div>
+			<div id="all" data-options="iconCls:'icon-cancel'">删除全部窗口</div>
+		</div>
+		
+		
+	</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>主页布局</title>
+		<!-- 引入Jqueryeasyui  -->
+		<script type="text/javascript" src="../js/jquery-1.8.3.js" ></script>
+		<script type="text/javascript" src="../js/easyui/jquery.easyui.min.js" ></script>
+		<script type="text/javascript" src="../js/easyui/locale/easyui-lang-zh_CN.js" ></script>
+		<link rel="stylesheet" href="../js/easyui/themes/default/easyui.css" />
+		<link rel="stylesheet" href="../js/easyui/themes/icon.css" />
+		<!-- 引入etree -->
+		<script type="text/javascript" src="../js/ztree/jquery.ztree.all-3.5.js" ></script>
+		<link rel="stylesheet" href="../js/ztree/zTreeStyle.css" />
+		<script>
+			
+			$(function(){
+				
+				<!-- 设置树形菜单 -->
+				var setting = {
+					data:{
+						simpleData:{
+							enable:true // 支持简单json数据
+						}
+					},
+					
+					callback: {
+						onClick : function(event, treeId, treeNode, clickFlag){
+							
+							
+							var content = '<div style="width:100%;height:100%;overflow:hidden;">'
+								+ '<iframe src="'
+								+ treeNode.page
+								+ '" scrolling="auto" style="width:100%;height:100%;border:0;" ></iframe></div>';
+							
+							// 没有page树形菜单，不打开选项卡
+							if(treeNode.page != undefined && treeNode.page != ""){
+								// 如果选项卡已经打开，选中 
+								if($("#xuan").tabs('exists',treeNode.name)){
+									// 选中选项卡
+									$("#xuan").tabs('select',treeNode.name);
+								}else{
+									// 如果没有打开，添加选项卡 
+									$("#xuan").tabs('add',{
+										title:treeNode.name,
+										content: content,
+										closable :true
+									});
+								}
+							}
+						}
+					}
+				
+				
+			};
+				
+				var nodes = [
+					{id:1,pId:0,name:"父节点1"},
+					{id:11,pId:1,name:"子节点1"},
+					{id:12,pId:1,name:"子节点2",page:"http://www.baidu.com"},
+					{id:13,pId:1,name:"子节点3",page:"http://www.itcast.cn"}
+				]
+				
+				$.fn.zTree.init($("#treeid"), setting, nodes);
+			 
+				$("#xuan").tabs({
+				 	onContextMenu:function(e, title,index){
+				 		// 阻止默认菜单显示
+				 		e.preventDefault();
+				 		
+				 		// 显示自定义右键菜单
+				 		$("#youjian").menu("show",{
+				 			left:e.pageX,
+				 			top:e.pageY
+				 		});
+				 		
+				 	}
+				});
+			
+			});
+			
+		</script>
+	</head>
+	<body class="easyui-layout">
+		
+			<div data-options="region:'north',title:'聂富泽'" style="height: 100px;">北部
+				<!-- 下拉菜单的实现 -->
+				<a id="md" data-options="iconCls:'icon-save',menu:'#mm'" class="easyui-menubutton">系统设置</a>
+			
+			<div id="mm" style="width: 150px;">
+				<div>一</div>
+				<div>二</div>
+				<div>三</div>
+				<div>四</div>
+			</div>
+			</div>
+			<div data-options="region:'west',title:'菜单栏'" style="width: 180px;">
+				
+				<div class="easyui-accordion" data-options="fit:true">
+					<div data-options="title:'普通菜单'">
+						<!-- 通过ztree插件，设置树形菜单 -->
+						<ul class="ztree" id="treeid"></ul>
+					</div>
+					<div data-options="title:'系统菜单'"></div>
+				
+				</div>
+				
+			</div>
+			<div data-options="region:'center'">
+				<!-- 选项卡设置 -->
+				<div id="xuan" class="easyui-tabs" data-options="fit:true">
+					
+					<div data-options="title:'一',closable:true">
+						<a class="iconCls:'icon-reload'" href="#"></a>
+						一一一</div>
+					<div data-options="title:'二'">二二二</div>
+					
+				</div>
+				
+			</div>
+			<div data-options="region:'south'">南部</div>
+			<div data-options="region:'east',title:'东部'" style="width: 100px;">东部</div>
+		
+			<div id="youjian" class="easyui-menu">
+				
+				<div>关闭当前窗口</div>
+				<div>关闭其它窗口</div>
+				<!-- 分割线 -->
+				<div class="menu-sep"></div>
+				<div data-options="iconCls:'icon-cancel'">关闭全部窗口</div>
+				
+			</div>
+			
+		
+			
+	</body>
+</html>
